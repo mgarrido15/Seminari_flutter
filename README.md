@@ -24,3 +24,7 @@ Algunes webs amb material de disseny per Flutter:
 [3] https://docs.flutter.dev/ui/widgets/layout
 [4] https://m3.material.io/
 [5] https://pub.dev/packages/http
+
+## Fonts utilitzades
+
+Videos dels companys i copilot
