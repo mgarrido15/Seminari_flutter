@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import '../models/user.dart';
+import '../provider/users_provider.dart';
+import 'package:provider/provider.dart';
+import '../provider/users_provider.dart';
+import 'package:flutter/material.dart';
 
 class AuthService {
   bool isLoggedIn = false; // Variable para almacenar el estado de autenticación
@@ -17,7 +22,7 @@ class AuthService {
   }
 
   //login
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(BuildContext context, String email, String password) async {
     final url = Uri.parse('$_baseUrl/login');
 
     final body = json.encode({'email': email, 'password': password});
@@ -33,7 +38,13 @@ class AuthService {
       print("Resposta rebuda amb codi: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        final responseData = json.decode(response.body);
+        final user = User.fromJson(responseData);
+        if (context.mounted)
+        {
+          Provider.of<UserProvider>(context, listen: false).setUser(user);
+        }  
+        return responseData;
       } else {
         return {'error': 'email o contrasenya incorrectes'};
       }

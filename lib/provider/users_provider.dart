@@ -6,10 +6,18 @@ class UserProvider with ChangeNotifier {
   List<User> _users = [];
   bool _isLoading = false;
   String? _error;
+  User? _user;
 
   List<User> get users => _users;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  User? get user => _user;
+
+  void setUser(User user) {
+    _user = user;
+    print('Usuario almacenado en UserProvider: ${_user?.name}, ${_user?.email}');
+    notifyListeners();
+  }
 
   void _setLoading(bool loading) {
     _isLoading = loading;

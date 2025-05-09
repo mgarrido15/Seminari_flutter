@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:seminari_flutter/components/my_textfield.dart';
 import 'package:seminari_flutter/components/my_button.dart';
 import 'package:seminari_flutter/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:seminari_flutter/provider/users_provider.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -21,7 +23,7 @@ class LoginPage extends StatelessWidget {
       return;
     }
 
-    final result = await authService.login(email, password);
+    final result = await authService.login(context, email, password);
 
     if (result.containsKey('error')) {
       _showError(context, result['error']);

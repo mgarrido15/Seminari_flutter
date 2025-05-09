@@ -2,12 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/Layout.dart';
 import '../services/auth_service.dart';
+import 'package:provider/provider.dart';
+import '../provider/users_provider.dart';
+import 'change_password_screen.dart';
+import 'edit_user_screen.dart';
+
 
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
+    
+    if (user == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(), // Muestra un indicador de carga
+        ),
+      );
+    }
     return LayoutWrapper(
       title: 'Perfil',
       child: SingleChildScrollView(
@@ -26,14 +40,14 @@ class PerfilScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Exemple',
+                    user.name,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'demo@exemple.com',
+                    user.email,
                     style: Theme.of(
                       context,
                     ).textTheme.titleMedium?.copyWith(color: Colors.grey),
@@ -52,10 +66,10 @@ class PerfilScreen extends StatelessWidget {
                             context,
                             Icons.badge,
                             'ID',
-                            '67f8f3103368468b6e9d509c',
+                            user.id.toString(),
                           ),
                           const Divider(),
-                          _buildProfileItem(context, Icons.cake, 'Edat', '22'),
+                          _buildProfileItem(context, Icons.cake, 'Edat', user.age.toString()),
                         ],
                       ),
                     ),
@@ -174,7 +188,23 @@ class PerfilScreen extends StatelessWidget {
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () {},
+      onTap: () 
+      {
+        if (title == 'Editar Perfil') {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => EditarPerfilScreen(),
+          ),
+        );
+        }
+        else if (title == 'Canviar contrasenya') {
+          Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ChangePasswordScreen(),
+          ),
+        );
+      }
+      },
     );
   }
 }
